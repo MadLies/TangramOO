@@ -39,14 +39,7 @@ class Triangle extends Shape {
     vertex(-(84.85),+42.42);
     endShape(CLOSE);
    }
-  }
-  
-    void setHue(color hue) {
-   _hue = hue ;
-  }
-
-   
-   
+  } 
    public int type() {
     return _type;
   }

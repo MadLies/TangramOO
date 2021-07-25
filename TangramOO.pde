@@ -1,4 +1,5 @@
-
+// Creado por Juan David Wilches (MadLies)  
+ 
 // Implementar:
 // 1. La creación de las siete distintas piezas (por ahora son todas Rect) 
 // 2. La interacción: selección y manipulación de las piezas (ratón, teclas, touch...)
@@ -14,10 +15,14 @@
 //Con el espacio refleja el romboide
 //Para volver al menu se debe oprimir la tecla b 
 //ocultar o mostrar la cuadricula con la tecla g
-//Para que un nivel sea valido el numero de pixeles negros (número mostrado en la ezquina superior derecha) debe ser menor de mil
-//Para poder crear un nivel se debe ingresar en el modo modo libre, organizar las piezas a gusto, quitar la cuadricula y presionar la tecla s
-//Ahora se podra acceder este nivel en mis niveles creados, en donde se guardara como el primer nivel del mundo 1 y asi ira avanzando por cada nivel nuevo
-//mientras el programa se ejecuta
+//Para que un nivel sea valido el numero de pixeles negros (número mostrado en la ezquina superior derecha) debe ser menor de mil(1000)
+//Para poder crear un nivel se debe ingresar en el  modo libre, organizar las piezas a gusto, quitar la cuadricula y presionar la tecla s para guardarlo
+//Ahora se podra acceder  a este nivel en mis niveles creados, en donde se guardara como el primer nivel del mundo 1 y asi ira avanzando por cada nivel nuevo mientras el programa se ejecuta
+//Cuando ingreses a mis niveles podras interactuar con las flechas izquiera y derecha para ingresar al mundo 1 y al mundo 2 respectivamente
+//Ya estando en el mundo deseado presionar algún número entre uno y nueve(1-9) para ingresar al nivel deseado
+//Estando en el modo de juego libre  y en tus niveles podras utilizar las teclas 0, 1, 2 para escoger el tamaño de las fichas
+//donde 0 es la mitad del tamaño, 1 el tamaño normal y 2 el tamaño aumentado un 50%
+// A jugar :3 
 
 
 
@@ -47,18 +52,16 @@ void draw() {
   background(255, 255, 255);
 
   philtre();
+ if(menu==5||menu==6)presentMyLevels();
  if (drawGrid)drawGrid(10);
- if (menu==0) mainMenu(); 
- if (menu==5 || menu==6)selectLevel(); 
  if (menu !=0 && menu!=5 && menu!=6){for (Shape shape : shapes)
    shape.draw();}  
+ if (menu==0) mainMenu(); 
  if (menu!=0 && menu!=5 && menu!=6 && menu!=4 )  evaluate();
    getPix= get(mouseX,mouseY);
-  
-
-
 }
 
+// Se encarga de dibujar la cuadricula 
 void drawGrid(float scale) {
   push();
   strokeWeight(1);
@@ -74,7 +77,7 @@ void drawGrid(float scale) {
   pop();
 }
 
-
+// Se encarga de aplicar el filtro a la imagen para que se cree la sombra a blanco y negro 
 void philtre(){
   PImage defaultLevel;
   PImage freePlay;
@@ -131,6 +134,8 @@ defaultLevel.loadPixels();
   }  
 }
 
+
+//Se encarga de contar cuantos pixeles negros hay para evaluar la solución
 void evaluate(){
   PImage goku;
   goku = loadImage("goku.png");
@@ -140,33 +145,110 @@ void evaluate(){
    if (pixels[i]==color(2))blackPixels+=1;
   }
   updatePixels();
-  fill(255,0,0);
-  text(blackPixels,800,200);
+  fill(0,0,100);
+  text("Black Pixels "+blackPixels,100,50);
   if ( blackPixels <=1000){
    image(goku,800,500,300,400);
   
   }
 }
 
-void selectLevel(){
-  if (menu==5) {
+
+//Se encarga de dibujar una versión miniatura de cada nivel para que el usuario sepa cual escoger
+void presentMyLevels(){
+  PImage presentLevel;
+  PImage withFilter;
+  int treshold = 200;
+  if (menu ==5){
+    fill(0);
+    textSize(60);
+    text("Mundo 1",420,50);
+    text("Presiona un número",100,100);
+  }
+  if (menu==6){
    fill(0);
    textSize(60);
-   text("Mundo 1",420,300);
-   text("Presiona un número",100,450);
-   text("entre",450,600);
-   text("1 - 9",500,750); }
-  if (menu==6) {
-   fill(0);
-   textSize(60);
-   text("Mundo 2",420,300);
-   text("Presiona un número",100,450);
-   text("entre",450,600);
-   text("1 - 9",500,750); }  
-   
+   text("Mundo 2",420,50);
+   text("Presiona un número",100,100);
+  }
+  
+ for(int i =1 ; i<=18;i++){   
+  presentLevel = loadImage("level"+i+".jpg");
+  withFilter= createImage(1200,1000,RGB);
+  presentLevel.loadPixels();
+  withFilter.loadPixels();
+  
+  for(int x = 0; x<1200; x++){
+    for(int y = 0; y<1000; y++){
+      int loc = x+y*1200;
+      if (brightness(presentLevel.pixels[loc])<treshold)withFilter.pixels[loc]=color(2);
+      else  withFilter.pixels[loc]=color(255);
+  }
+  }
+  withFilter.updatePixels(); 
+  if (menu==5){
+  if (i==1){
+    image(withFilter,150,100,300,300);
+    text(i,270,350); }
+  if (i==2){
+    image(withFilter,450,100,300,300);
+    text(i,570,350);}
+  if (i==3){
+    image(withFilter,750,100,300,300);
+    text(i,870,350);}
+  if (i==4){
+    image(withFilter,150,400,300,300);
+     text(i,270,650);}
+  if (i==5){
+    image(withFilter,450,400,300,300);
+    text(i,570,650);}
+  if (i==6){
+    image(withFilter,750,400,300,300);
+     text(i,870,650);}
+  if (i==7){
+    image(withFilter,150,700,300,300);
+     text(i,270,950);}
+  if (i==8){
+    image(withFilter,450,700,300,300);
+     text(i,570,950);}
+  if (i==9){
+    image(withFilter,750,700,300,300);
+     text(i,870,950);}      
+  }  
+  
+  if (menu==6){
+      if (i==10){
+    image(withFilter,150,100,300,300);
+    text(1,270,350); }
+  if (i==11){
+    image(withFilter,450,100,300,300);
+    text(2,570,350);}
+  if (i==12){
+    image(withFilter,750,100,300,300);
+    text(3,870,350);}
+  if (i==13){
+    image(withFilter,150,400,300,300);
+     text(4,270,650);}
+  if (i==14){
+    image(withFilter,450,400,300,300);
+    text(5,570,650);}
+  if (i==15){
+    image(withFilter,750,400,300,300);
+     text(6,870,650);}
+  if (i==16){
+    image(withFilter,150,700,300,300);
+     text(7,270,950);}
+  if (i==17){
+    image(withFilter,450,700,300,300);
+     text(8,570,950);}
+  if (i==18){
+    image(withFilter,750,700,300,300);
+     text(9,870,950);}      
+  }
+ }
 }
 
-
+//Se encarga de dibujar el menu para que se pueda interatuar con el 
 void mainMenu(){
  PImage boat, fox, fish,play, bob;
  PFont font;
@@ -211,28 +293,62 @@ void keyPressed() {
   if (keyCode == RIGHT) menu=6;
   }
 if (menu== 5){
- if (key==  '1')myLevel=1; 
- if (key==  '2')myLevel=2; 
- if (key==  '3')myLevel=3; 
- if (key==  '4')myLevel=4; 
- if (key==  '5')myLevel=5; 
- if (key==  '6')myLevel=6; 
- if (key==  '7')myLevel=7; 
- if (key==  '8')myLevel=8; 
- if (key==  '9')myLevel=9; 
- if (keyPressed  && keyCode != LEFT && keyCode != RIGHT )menu=7;
+ if (key==  '1'){
+   myLevel=1; 
+   menu=7;}
+ if (key==  '2'){
+   myLevel=2;
+   menu=7;}
+ if (key==  '3'){
+   myLevel=3; 
+   menu=7;}
+ if (key==  '4'){
+   myLevel=4; 
+   menu=7;}
+ if (key==  '5'){
+   myLevel=5; 
+   menu=7;}
+ if (key==  '6'){
+   myLevel=6; 
+   menu=7;}
+ if (key==  '7'){
+   myLevel=7; 
+   menu=7;}
+ if (key==  '8'){
+   myLevel=8;
+   menu=7;}
+ if (key==  '9'){
+   myLevel=9; 
+   menu=7;}
 }
 if (menu== 6){
- if (key==  '1')myLevel=10; 
- if (key==  '2')myLevel=11; 
- if (key==  '3')myLevel=12; 
- if (key==  '4')myLevel=13; 
- if (key==  '5')myLevel=14; 
- if (key==  '6')myLevel=15; 
- if (key==  '7')myLevel=16; 
- if (key==  '8')myLevel=17; 
- if (key==  '9')myLevel=18; 
- if (keyPressed && keyCode != LEFT && keyCode != RIGHT)menu=7;
+ if (key==  '1'){
+   myLevel=10; 
+   menu=7;}
+ if (key==  '2'){
+   myLevel=11;
+   menu=7;}
+ if (key==  '3'){
+   myLevel=12;
+   menu=7;}
+ if (key==  '4'){
+   myLevel=13;
+   menu=7;}
+ if (key==  '5'){
+   myLevel=14;
+   menu=7;}
+ if (key==  '6'){
+   myLevel=15;
+   menu=7;}
+ if (key==  '7'){
+   myLevel=16;
+   menu=7;}
+ if (key==  '8'){
+   myLevel=17;
+   menu=7;}
+ if (key==  '9'){
+   myLevel=18; 
+   menu=7;}
 }
 }
 

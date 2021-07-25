@@ -53,6 +53,15 @@ abstract class Shape {
   // */
 
   float scaling() {
+    
+    if (menu!=4 && menu!=7 )_scaling=1;
+    if(menu==4 || menu==7){
+    if (keyPressed){
+     if ( key == '0')_scaling= 0.5;
+     if ( key == '1')_scaling= 1;
+     if ( key == '2')_scaling= 1.5;
+    }
+    }
     return _scaling;
   }
 
