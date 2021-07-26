@@ -7,7 +7,7 @@
 // 4. El modo de creacion de nuevos problemas
 
 
-// Controles 
+// Controles - Instrucciones
 //Dando clic podras interactuar en el menu
 //Con clic izquierdo se eligen las figuras 
 //Con clic derecho se sueltan las figuras
@@ -37,14 +37,7 @@ int myLevel = 0;
 
 void setup() {
   size(1200,1000);
-  shapes = new Shape[7];
-  shapes[0] = new Triangle(new PVector(0, 0),1,color(163,78,0));
-  shapes[1] = new Triangle(new PVector(0, 0),1,color(150,0,0));
-  shapes[2] = new Triangle(new PVector(0, 0),3,color(0,67,130));
-  shapes[3] = new Rect(84.84, color(150, 95, 0));
-  shapes[4] = new Rhomboid(new PVector(0,0),color(0,80,37));
-  shapes[5] = new Triangle(new PVector(0, 0),2,color(0,128,102));
-  shapes[6] = new Triangle(new PVector(0, 0),2,color(87,35,100));
+  objects();
 }
 
 void draw() {
@@ -76,7 +69,17 @@ void drawGrid(float scale) {
   }
   pop();
 }
-
+void objects(){
+  shapes = new Shape[7];
+  shapes[0] = new Triangle(new PVector(0, 0),1,color(163,78,0));
+  shapes[1] = new Triangle(new PVector(0, 0),1,color(150,0,0));
+  shapes[2] = new Triangle(new PVector(0, 0),3,color(0,67,130));
+  shapes[3] = new Rect(84.84, color(150, 95, 0));
+  shapes[4] = new Rhomboid(new PVector(0,0),color(0,80,37));
+  shapes[5] = new Triangle(new PVector(0, 0),2,color(0,128,102));
+  shapes[6] = new Triangle(new PVector(0, 0),2,color(87,35,100));
+  
+}
 // Se encarga de aplicar el filtro a la imagen para que se cree la sombra a blanco y negro 
 void philtre(){
   PImage defaultLevel;
@@ -281,7 +284,9 @@ void keyPressed() {
   if (key == 'g' || key == 'G')drawGrid = !drawGrid; 
   if (key== 32) reflex=!reflex;
   if (key ==  'b' || key == 'B'){
-    menu=0;}
+    menu=0;
+    objects();
+  }
   if( drawGrid == false && menu==4){
     if (key ==  's' || key == 'S'){
       save("data//level"+newLevel+".jpg");
@@ -293,6 +298,7 @@ void keyPressed() {
   if (keyCode == RIGHT) menu=6;
   }
 if (menu== 5){
+
  if (key==  '1'){
    myLevel=1; 
    menu=7;}
@@ -319,8 +325,9 @@ if (menu== 5){
    menu=7;}
  if (key==  '9'){
    myLevel=9; 
-   menu=7;}
+   menu=7;}  
 }
+ 
 if (menu== 6){
  if (key==  '1'){
    myLevel=10; 
